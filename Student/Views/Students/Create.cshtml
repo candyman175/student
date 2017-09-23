@@ -1,0 +1,79 @@
+﻿@model Student.Models.Student
+
+@{
+    ViewBag.Title = "Add Student";
+}
+
+<h2>Add Student</h2>
+<div ng-cloak ng-controller="myCtrl">
+
+    <form name="StudentForm" method="post" action="">
+        @Html.AntiForgeryToken()
+        {{StudentForm.$valid}}
+        {{StudentForm.GPA.$valid}}
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("First Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Firstname, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Firstname, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Last Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Lastname, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Lastname, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Date Of Birth", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", ng_model = "DOB", ng_pattern = "/^\\d{1,2}\\/\\d{1,2}\\/\\d{4}$/", type = "text" } })
+                    @* @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })*@
+                    {{StudentForm.DateOfBirth.$dirty}}
+                    {{StudentForm.DateOfBirth.$valid}}
+                    {{DOB}}
+                    <p ng-show="!StudentForm.DateOfBirth.$valid" class="help-block">
+                        Date of birth should be a valid date in mm/dd/yyyy format
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("GPA", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.GPA, new { htmlAttributes = new { @class = "form-control", ng_model = "GPA", ng_pattern = "/^[0-4]\\.\\d{1,2}$/", type = "text" } })
+                    @*<input type="text" ng-model="GPA" id="GPA" name="GPA" my-directive />*@
+                    @*@Html.ValidationMessageFor(model => model.GPA, "", new { @class = "text-danger" })*@
+                    {{StudentForm.GPA.$dirty}}
+                    {{StudentForm.GPA.$valid}}
+                    {{GPA}}
+                    <p ng-show="!StudentForm.GPA.$valid" class="help-block">
+                        GPA can be no larger than 4 and has to have 2 digits after decimal
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" ng-disabled="!StudentForm.$valid" />
+                </div>
+            </div>
+        </div>
+
+    </form>
+    @*<pre ng-bind="StudentForm.DateOfBirth.$error|json"></pre>*@
+</div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
